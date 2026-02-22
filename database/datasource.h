@@ -1,12 +1,16 @@
-#ifndef _datasource_h
-# define _datasource_h
+#ifndef DATASOURCE_H
+#define DATASOURCE_H
 
-struct db_conn opendb(char db_name[]);
+#include <sqlite3.h>
 
-int add_link(struct db_conn, const char *link);
+struct db_conn {
+    int rc;
+    sqlite3 *db;
+};
 
-char *get_link(struct db_conn db, int id);
-
-int main();
+int opendb(struct db_conn *conn, const char *db_name);
+void closedb(struct db_conn *conn);
+int add_link(struct db_conn *conn, const char *link);
+int get_link(struct db_conn *conn, int id, char *out_link, int max_len);
 
 #endif
